@@ -17,6 +17,23 @@ Technical Specs:
 
 This first version is a MVP to get things working before I implement a custom translation solution!
 
+## Requirements
+
+- Bun v1.3.11 or newer
+- `hono` (installed automatically via `bun install`)
+- `dotenv` (installed automatically via `bun install`)
+- OpenRouter API key (set in `API_KEY` environment variable)
+
+## Environment
+
+Create a `.env` file at project root:
+
+```ini
+API_KEY=your_openrouter_api_key
+```
+
+> Note: Bun automatically loads `.env` files.
+
 ## Setup
 
 To install dependencies:
@@ -25,7 +42,13 @@ To install dependencies:
 bun install
 ```
 
-To run:
+To run (development):
+
+```bash
+bun run dev
+```
+
+To run directly:
 
 ```bash
 bun run index.ts
