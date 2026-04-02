@@ -8,9 +8,17 @@ import { bearerAuth } from 'hono/bearer-auth';
 import { randomUUIDv7 } from "bun";
 import Database from "bun:sqlite";
 import { mkdirSync, existsSync } from "fs";
+import path from "path";
+import { env } from 'process';
 
 // DB setup + INDEX
-const db = new Database("api.db");
+const sqlitePath = process.env.SQLITE_PATH || "./data/api.db";
+const sqliteDir = path.dirname(sqlitePath);
+if (!existsSync(sqliteDir)) {
+  mkdirSync(sqliteDir, { recursive: true });
+}
+
+const db = new Database(sqlitePath);
 
 db.run(`
   CREATE TABLE IF NOT EXISTS api_keys (
@@ -197,5 +205,38 @@ app.get('/api/stats', async (c) => {
     total_requests: usage.total || 0
   })
 })
+
+const urlEndpoint = process.env.URL_ENDPOINT;
+
+app.get('/', (c) => {
+  const requestUrl = new URL(c.req.url);
+  const autoEndpoint = `${requestUrl.protocol}//${requestUrl.host}`;
+  const endpoint = urlEndpoint || autoEndpoint;
+
+  return c.html(`
+    <h1>Mandarin API</h1>
+    <p>Welcome! This endpoint is API documentation for this service.</p>
+    <h2>Endpoints</h2>
+    <ul>
+      <li><strong>POST /api/translate</strong> - translate English text to simplified, traditional, and pinyin.
+        <ul>
+          <li>Headers: Authorization: Bearer &lt;API_KEY&gt;</li>
+          <li>Body: JSON { "text": "Hello" }</li>
+        </ul>
+      </li>
+      <li><strong>POST /api/generate-key</strong> - create a new API key (admin only)
+        <ul><li>Headers: x-admin-key: &lt;ADMIN_KEY&gt;</li></ul>
+      </li>
+      <li><strong>GET /api/stats</strong> - usage stats</li>
+    </ul>
+    <h2>Example translate request</h2>
+    <pre><code>curl -X POST ${endpoint}/api/translate \
+      -H 'Authorization: Bearer YOUR_KEY' \
+      -H 'Content-Type: application/json' \
+      -d '{"text":"How are you?"}'
+    </code></pre>
+    <p>Detected base URL: <code>${endpoint}</code></p>
+  `);
+});
 
 export default app;
