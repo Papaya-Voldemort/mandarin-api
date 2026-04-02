@@ -17,6 +17,9 @@ Technical Specs:
 
 This first version is a MVP to get things working before I implement a custom translation solution!
 
+### #2:
+Today and yesterday I worked on adding new endpoints and generally updating the fixing the API, I added API keys, CORS, and other forms of validation including rate limiting. The next step will be building a webpage to generate and manage API keys.
+
 ## Requirements
 
 - Bun v1.3.11 or newer
@@ -30,6 +33,7 @@ Create a `.env` file at project root:
 
 ```ini
 API_KEY=your_openrouter_api_key
+ADMIN_KEY=thekeyforapicreation
 ```
 
 > Note: Bun automatically loads `.env` files.
