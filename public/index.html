@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mandarin API Console</title>
+    <meta
+      name="description"
+      content="Manage account sessions, API keys, and translation requests for Mandarin API."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <div class="bg-grid" aria-hidden="true"></div>
+    <main class="shell dashboard">
+      <header class="topbar card floating">
+        <a href="/" class="brand">Mandarin API</a>
+        <nav class="top-links">
+          <a href="#overview">Overview</a>
+          <a href="#workspace">Workspace</a>
+          <a href="#docs">Docs</a>
+          <a href="/login.html" class="pill-link">Login Page</a>
+        </nav>
+      </header>
+
+      <section id="overview" class="hero card floating">
+        <div>
+          <p class="eyebrow">Console</p>
+          <h1>Manage authentication, API keys, and translation requests.</h1>
+          <p class="lede">
+            Use this page to sign in, generate keys, test requests, and review endpoint usage.
+          </p>
+          <div class="row">
+            <a href="/login.html" class="cta">Open login</a>
+            <button id="logoutBtn" class="ghost">Logout</button>
+          </div>
+          <p id="sessionStatus" class="status">Not signed in.</p>
+        </div>
+        <div class="hero-meta">
+          <div>
+            <span>Runtime</span>
+            <strong>Bun + Hono</strong>
+          </div>
+          <div>
+            <span>Security</span>
+            <strong>Session + key auth</strong>
+          </div>
+          <div>
+            <span>Limits</span>
+            <strong>Auth and API throttling</strong>
+          </div>
+        </div>
+      </section>
+
+      <section id="workspace" class="grid">
+        <article class="card floating">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Identity</p>
+              <h2>Session details</h2>
+            </div>
+          </div>
+
+          <label>
+            <span>Email</span>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </label>
+
+          <label>
+            <span>Password</span>
+            <input
+              id="password"
+              type="password"
+              placeholder="At least 8 characters"
+              autocomplete="current-password"
+            />
+          </label>
+
+          <div class="row">
+            <button id="signupBtn">Create account</button>
+            <button id="loginBtn" class="secondary">Sign in</button>
+          </div>
+
+          <label>
+            <span>Session token</span>
+            <input id="sessionToken" readonly placeholder="Created after sign in" />
+          </label>
+        </article>
+
+        <article class="card floating">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Keys</p>
+              <h2>Manage API keys</h2>
+            </div>
+          </div>
+
+          <label>
+            <span>Key label</span>
+            <input id="keyLabel" maxlength="64" placeholder="Production app" />
+          </label>
+
+          <div class="row">
+            <button id="createKeyBtn">Create key</button>
+            <button id="refreshKeysBtn" class="secondary">Refresh</button>
+          </div>
+
+          <div class="status" id="newKeyStatus">No key created yet.</div>
+
+          <label>
+            <span>Latest API key</span>
+            <input id="latestKey" readonly placeholder="Shown once after creation" />
+          </label>
+
+          <div id="keysList" class="stack"></div>
+        </article>
+
+        <article class="card floating">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Request test</p>
+              <h2>Translation preview</h2>
+            </div>
+          </div>
+
+          <label>
+            <span>API key</span>
+            <input id="apiKeyInput" placeholder="Paste or create one" />
+          </label>
+
+          <label>
+            <span>English text</span>
+            <textarea id="translateText" placeholder="How are you?" rows="5"></textarea>
+          </label>
+
+          <div class="row">
+            <button id="translateBtn">Translate</button>
+            <button id="copyKeyBtn" class="secondary">Copy key</button>
+          </div>
+
+          <pre id="translateOutput" class="output">No request yet.</pre>
+        </article>
+
+        <article id="docs" class="card docs-card floating">
+          <div class="card-head">
+            <div>
+              <p class="eyebrow">Developer docs</p>
+              <h2>Quick reference</h2>
+            </div>
+          </div>
+
+          <div class="docs">
+            <div>
+              <h3>Auth</h3>
+              <p>POST <code>/api/register</code>, <code>/api/login</code>, <code>/api/logout</code></p>
+            </div>
+            <div>
+              <h3>Keys</h3>
+              <p>GET/POST <code>/api/keys</code> and POST <code>/api/keys/:id/revoke</code></p>
+            </div>
+            <div>
+              <h3>Translate</h3>
+              <p>POST <code>/api/translate</code> with <code>x-api-key</code> and JSON body</p>
+            </div>
+          </div>
+
+          <pre class="output code-block">curl -X POST "$BASE/api/translate" \
+  -H "x-api-key: YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"How are you?"}'</pre>
+
+          <div class="mini-grid">
+            <div>
+              <span>Auth rate limit</span>
+              <strong>8 requests / 15 min / IP</strong>
+            </div>
+            <div>
+              <span>API rate limit</span>
+              <strong>120 requests / min / key</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

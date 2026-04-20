@@ -1,61 +1,42 @@
-# mandarin-api
+# Mandarin API
 
-A TS Hono API that takes english as an input and translates it into all forms of Mandarin Chinese, this includes Traditional (Taiwan), Simplified (Main Land), and PinYin (English Speaker Readable). 
+Lightweight Bun + Hono API for signing up, creating API keys, and calling the Mandarin translation endpoint.
 
-## Devlogs
-
-### #1:
-Hello World! This is Mandarin API's first devlog, I kind of forgot how to start these lol!
-This is going to be a TS Hono API that takes english as an input and translates it into all forms of Mandarin Chinese, this includes Traditional (Taiwan), Simplified (Main Land), and PinYin (English Speaker Readable). 
-
-I am building this tool because I love Taiwan and am working on learning Chinese so I can live there someday :)
-
-Technical Specs:
-- Bun (Faster than Node)
-- Hono (Easy and fast works with Bun)
-- Translation (OpenRouter model for now eventually custom solution)
-
-This first version is a MVP to get things working before I implement a custom translation solution!
-
-### #2:
-Today and yesterday I worked on adding new endpoints and generally updating the fixing the API, I added API keys, CORS, and other forms of validation including rate limiting. The next step will be building a webpage to generate and manage API keys.
-
-## Requirements
-
-- Bun v1.3.11 or newer
-- `hono` (installed automatically via `bun install`)
-- `dotenv` (installed automatically via `bun install`)
-- OpenRouter API key (set in `API_KEY` environment variable)
-
-## Environment
-
-Create a `.env` file at project root:
-
-```ini
-API_KEY=your_openrouter_api_key
-ADMIN_KEY=thekeyforapicreation
-```
-
-> Note: Bun automatically loads `.env` files.
-
-## Setup
-
-To install dependencies:
+## Run
 
 ```bash
 bun install
-```
-
-To run (development):
-
-```bash
 bun run dev
 ```
 
-To run directly:
+## Environment
 
-```bash
-bun run index.ts
+Optional:
+
+```ini
+SQLITE_PATH=./data/api.db
+HACKCLUB_AI_API_KEY=your_hack_club_ai_key
+HACKCLUB_AI_MODEL=qwen/qwen3-32b
+# Optional override (default shown):
+# HACKCLUB_AI_BASE_URL=https://ai.hackclub.com/proxy/v1
+# Test helper only:
+# TRANSLATE_MOCK=1
 ```
 
-This project was created using `bun init` in bun v1.3.11. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+## API
+
+- `POST /api/register` — create an account and session
+- `POST /api/login` — sign in and create a session
+- `POST /api/logout` — invalidate the current session
+- `GET /api/me` — current account details
+- `GET /api/keys` — list your keys
+- `POST /api/keys` — create a key
+- `POST /api/keys/:id/revoke` — revoke a key
+- `POST /api/translate` — translate text with `x-api-key` (server calls Hack Club AI chat completions)
+
+## Limits
+
+- Auth endpoints: `8` requests per `15` minutes per IP
+- Translate endpoint: `120` requests per minute per API key
+
+Open the app at `/` for the dashboard and quick docs.

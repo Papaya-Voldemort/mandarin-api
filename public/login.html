@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mandarin API Login</title>
+    <meta
+      name="description"
+      content="Sign in or create an account for Mandarin API."
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="login">
+    <div class="bg-grid" aria-hidden="true"></div>
+    <main class="shell auth-shell">
+      <section class="auth-layout">
+        <article class="card auth-panel floating">
+          <p class="eyebrow">Authentication</p>
+          <h1 class="auth-title">Sign in or create an account.</h1>
+          <p class="lede">Access API key management and translation endpoints.</p>
+
+          <div id="sessionStatus" class="status">Not signed in.</div>
+
+          <label>
+            <span>Email</span>
+            <input id="email" type="email" placeholder="you@example.com" autocomplete="email" />
+          </label>
+
+          <label>
+            <span>Password</span>
+            <input
+              id="password"
+              type="password"
+              placeholder="At least 8 characters"
+              autocomplete="current-password"
+            />
+          </label>
+
+          <div class="row">
+            <button id="loginBtn">Sign in</button>
+            <button id="signupBtn" class="secondary">Create account</button>
+          </div>
+
+          <label>
+            <span>Session token</span>
+            <input id="sessionToken" readonly placeholder="Created after sign in" />
+          </label>
+
+          <div class="row">
+            <a href="/" class="cta secondary-link">Back to dashboard</a>
+            <button id="logoutBtn" class="ghost">Logout</button>
+          </div>
+        </article>
+
+        <aside class="auth-aside floating">
+          <div class="cube" aria-hidden="true">
+            <span class="face front"></span>
+            <span class="face back"></span>
+            <span class="face right"></span>
+            <span class="face left"></span>
+            <span class="face top"></span>
+            <span class="face bottom"></span>
+          </div>
+          <h2>Secure access</h2>
+          <p>Sessions are required for API key creation and key management actions.</p>
+          <ul class="feature-list">
+            <li>Register with email and password</li>
+            <li>Sign in to open the console</li>
+            <li>Logout to revoke the current session</li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
